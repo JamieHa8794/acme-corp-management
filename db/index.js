@@ -12,7 +12,7 @@ const User = conn.define('user', {
     }
 })
 
-const Department = conn.define('user', {
+const Department = conn.define('department', {
     name: {
         type: STRING,
         allowNull: false,
@@ -20,6 +20,8 @@ const Department = conn.define('user', {
     }
 })
 
+Department.belongsTo(User);
+//User.hasMany(Department);
 
 const syncAndSeed = async ()=>{
     await conn.sync({force: true})
@@ -27,6 +29,10 @@ const syncAndSeed = async ()=>{
         ['lucy', 'moe', 'larry'].map(name => User.create({name}))
     )
     console.log(lucy.get())
+    const [hr, engineering, marketing] = await Promise.all(
+        ['hr', 'engineering', 'marketing'].map(name => Department.create({name}))
+    )
+    console.log(hr.get())
 }
 
 module.exports ={
