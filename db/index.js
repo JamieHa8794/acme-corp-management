@@ -32,9 +32,16 @@ const syncAndSeed = async ()=>{
     const [hr, engineering, marketing] = await Promise.all(
         ['hr', 'engineering', 'marketing'].map(name => Department.create({name}))
     )
-    console.log(hr.get())
+    engineering.userId = lucy.id;
+    marketing.userId = lucy.id;
+    await Promise.all([engineering.save(), marketing.save()]);
+
 }
 
 module.exports ={
     syncAndSeed,
+    models: {
+        User,
+        Department,
+    }
 }
