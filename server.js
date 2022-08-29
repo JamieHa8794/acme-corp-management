@@ -1,6 +1,9 @@
 const {syncAndSeed, models: { User, Department} } = require('./db/index')
 const express = require('express')
 const app = express();
+const path = require('path');
+
+app.use('/public', express.static(path.join(__dirname, 'public')))
 
 app.get('/', async (req, res, next) =>{
     try{
@@ -8,10 +11,39 @@ app.get('/', async (req, res, next) =>{
             User.findAll(),
             Department.findAll()
         ])
-        res.send({
-            users,
-            departments
-        });
+        res.send(`
+            <html>
+                <head>
+                    <link rel='stylesheet' href='/public/stylesheet.css'/>
+                </head>
+                <body>
+                    <h1>
+                        Users
+                    </h1>
+                    <ul>
+                        ${users.map(user =>{
+                            return(`
+                                <li>
+                                    ${user.name}
+                                </li>
+                            `)
+                        }).join('')}
+                    </ul>
+                        <h1>
+                            Departments
+                        </h1>
+                    <ul>
+                    ${departments.map(department =>{
+                        return(`
+                            <li>
+                                ${department.name}
+                            </li>
+                        `)
+                    }).join('')}
+                </ul>
+                </body>
+            </html>
+        `);
     }
     catch(err){
         next(err);
