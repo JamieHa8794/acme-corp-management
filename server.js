@@ -3,9 +3,8 @@ const express = require('express')
 const app = express();
 const path = require('path');
 
+
 app.use('/public', express.static(path.join(__dirname, 'public')))
-
-
 
 
 app.get('/', async (req, res, next) =>{
@@ -74,7 +73,20 @@ app.get('/', async (req, res, next) =>{
                                     </div>
                                     <div class='manager'>
                                         Manager: 
-                                        ${department.user ? department.user.name : `No Manager`}
+                                        <form>
+                                        <select>
+                                            <option>
+                                            Not Managed
+                                            </option>
+                                            ${users.map(user =>{
+                                                return(`
+                                                <option ${user.id == department.userId ? 'selected="selected"':''}>
+                                                    ${user.name}
+                                                </option>
+                                                `)
+                                            })}
+                                        </select>
+                                        </form>
                                     </div>
                                 </li>
                             `)

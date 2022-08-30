@@ -26,10 +26,10 @@ User.hasMany(Department);
 const syncAndSeed = async ()=>{
     await conn.sync({force: true})
     const [lucy, moe, larry] = await Promise.all(
-        ['lucy', 'moe', 'larry'].map(name => User.create({name}))
+        ['Lucy', 'Moe', 'Larry'].map(name => User.create({name}))
     )
     const [hr, engineering, marketing] = await Promise.all(
-        ['hr', 'engineering', 'marketing'].map(name => Department.create({name}))
+        ['HR', 'Engineering', 'Marketing'].map(name => Department.create({name}))
     )
     engineering.userId = lucy.id;
     marketing.userId = lucy.id;
