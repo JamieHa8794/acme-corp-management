@@ -5,12 +5,23 @@ const path = require('path');
 
 app.use('/public', express.static(path.join(__dirname, 'public')))
 
+
+
+
 app.get('/', async (req, res, next) =>{
     try{
         const [users, departments] = await Promise.all([
-            User.findAll(),
-            Department.findAll()
+            User.findAll({
+                include: [Department]
+            }),
+            Department.findAll({
+                include: [User]
+            })
         ])
+        // res.send({
+        //     users,
+        //     departments
+        // })
         res.send(`
             <html>
                 <head>
@@ -24,7 +35,24 @@ app.get('/', async (req, res, next) =>{
                         ${users.map(user =>{
                             return(`
                                 <li>
-                                    ${user.name}
+                                    <div>
+                                    Name: ${user.name}
+                                    </div>
+                                    <div class='departments-managed'>
+                                    Departments Managed:
+                                    <ul>
+                                        ${user.departments.length ? 
+                                            user.departments.map(department =>{
+                                            return(`
+                                                <li>
+                                                    ${department.name}
+                                                </li>
+                                            `)
+                                        }).join('')
+                                    :
+                                        `No Departments Managed`
+                                    }
+                                    </ul>
                                 </li>
                             `)
                         }).join('')}
@@ -36,7 +64,13 @@ app.get('/', async (req, res, next) =>{
                     ${departments.map(department =>{
                         return(`
                             <li>
-                                ${department.name}
+                                <div>
+                                Name: ${department.name}
+                                </div>
+                                <div class='manager'>
+                                    Manager: 
+                                    ${department.user ? department.user.name : `No Manager`}
+                                </div>
                             </li>
                         `)
                     }).join('')}

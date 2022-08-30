@@ -1,7 +1,18 @@
 body{
-    background-color: tomato;
+    background-color: cadetblue;
+    color: whitesmoke;
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 li{
     list-style: circle;
+    margin-bottom: 20px;
+}
+.departments-managed{
+    padding-left: 10px;
+}
+.departments-managed > ul > li{
+    margin-bottom: 0px;
+}
+.manager{
+    padding-left: 10px;
 }
