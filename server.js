@@ -28,53 +28,59 @@ app.get('/', async (req, res, next) =>{
                     <link rel='stylesheet' href='/public/stylesheet.css'/>
                 </head>
                 <body>
-                    <h1>
-                        Users
-                    </h1>
-                    <ul>
-                        ${users.map(user =>{
+                    <div class='users-container'>
+                        <h1>
+                            Users
+                        </h1>
+                        <ul>
+                            ${users.map(user =>{
+                                return(`
+                                    <li>
+                                        <div>
+                                        Name: ${user.name}
+                                        </div>
+                                        <div class='departments-managed'>
+                                        Departments Managed:
+                                        <ul>
+                                            ${user.departments.length ? 
+                                                user.departments.map(department =>{
+                                                return(`
+                                                    <li>
+                                                        ${department.name}
+                                                    </li>
+                                                `)
+                                            }).join('')
+                                        :
+                                            `No Departments Managed`
+                                        }
+                                        </ul>
+                                    </li>
+                                `)
+                            }).join('')}
+                        </ul>
+                    </div>
+                    <div class='hr'>
+                    </div>
+                        <div class='departments-container'>
+                            <h1>
+                                Departments
+                            </h1>
+                        <ul>
+                        ${departments.map(department =>{
                             return(`
                                 <li>
                                     <div>
-                                    Name: ${user.name}
+                                    Name: ${department.name}
                                     </div>
-                                    <div class='departments-managed'>
-                                    Departments Managed:
-                                    <ul>
-                                        ${user.departments.length ? 
-                                            user.departments.map(department =>{
-                                            return(`
-                                                <li>
-                                                    ${department.name}
-                                                </li>
-                                            `)
-                                        }).join('')
-                                    :
-                                        `No Departments Managed`
-                                    }
-                                    </ul>
+                                    <div class='manager'>
+                                        Manager: 
+                                        ${department.user ? department.user.name : `No Manager`}
+                                    </div>
                                 </li>
                             `)
                         }).join('')}
-                    </ul>
-                        <h1>
-                            Departments
-                        </h1>
-                    <ul>
-                    ${departments.map(department =>{
-                        return(`
-                            <li>
-                                <div>
-                                Name: ${department.name}
-                                </div>
-                                <div class='manager'>
-                                    Manager: 
-                                    ${department.user ? department.user.name : `No Manager`}
-                                </div>
-                            </li>
-                        `)
-                    }).join('')}
-                </ul>
+                        </ul>
+                    </div>
                 </body>
             </html>
         `);

@@ -2,6 +2,9 @@ body{
     background-color: cadetblue;
     color: whitesmoke;
     font-family: Georgia, 'Times New Roman', Times, serif;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
 li{
     list-style: circle;
@@ -15,4 +18,7 @@ li{
 }
 .manager{
     padding-left: 10px;
+}
+.hr{
+    border-left: dotted;
 }
