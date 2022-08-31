@@ -74,18 +74,21 @@ app.get('/', async (req, res, next) =>{
                                     <div class='manager'>
                                         Manager: 
                                         <form>
-                                        <select>
-                                            <option>
-                                            Not Managed
-                                            </option>
-                                            ${users.map(user =>{
-                                                return(`
-                                                <option ${user.id == department.userId ? 'selected="selected"':''}>
-                                                    ${user.name}
+                                            <select name ='userId'>
+                                                <option>
+                                                Not Managed
                                                 </option>
-                                                `)
-                                            })}
-                                        </select>
+                                                ${users.map(user =>{
+                                                    return(`
+                                                    <option ${user.id == department.userId ? 'selected="selected"':''}>
+                                                        ${user.name}
+                                                    </option>
+                                                    `)
+                                                })}
+                                            </select>
+                                            <button>
+                                                Save
+                                            </button>
                                         </form>
                                     </div>
                                 </li>
