@@ -4,6 +4,10 @@ const app = express();
 const path = require('path');
 
 
+
+app.use(require('method-override')('_method'))
+app.use(express.urlencoded({ extended: false} ))
+
 app.use('/public', express.static(path.join(__dirname, 'public')))
 
 
@@ -73,14 +77,14 @@ app.get('/', async (req, res, next) =>{
                                     </div>
                                     <div class='manager'>
                                         Manager: 
-                                        <form>
+                                        <form method='POST' action='/departments/${department.id}?_method=PUT'>
                                             <select name ='userId'>
                                                 <option>
                                                 Not Managed
                                                 </option>
                                                 ${users.map(user =>{
                                                     return(`
-                                                    <option ${user.id == department.userId ? 'selected="selected"':''}>
+                                                    <option value='${user.id}' ${user.id == department.userId ? 'selected="selected"':''}>
                                                         ${user.name}
                                                     </option>
                                                     `)
@@ -104,6 +108,18 @@ app.get('/', async (req, res, next) =>{
         next(err);
     }
 })
+
+app.put('/departments/:id', async (req, res, next)=>{
+    try{
+        const department = await Department.findByPk(req.params.id)
+        await department.update(req.body)
+        res.redirect('/');
+    }
+    catch(err){
+        next(err);
+    }
+})
+
 
 
 const init = async () =>{
