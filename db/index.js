@@ -21,13 +21,13 @@ const Department = conn.define('department', {
 })
 
 Department.beforeSave(department =>{
-    if(department.userId===''){
-        department.userId = null;
+    if(department.managerId===''){
+        department.managerId = null;
     }
 })
 
-Department.belongsTo(User);
-User.hasMany(Department);
+Department.belongsTo(User, { as: 'manager' });
+User.hasMany(Department, { foreignKey: 'managerId'});
 
 const syncAndSeed = async ()=>{
     await conn.sync({force: true})
@@ -37,8 +37,8 @@ const syncAndSeed = async ()=>{
     const [hr, engineering, marketing] = await Promise.all(
         ['HR', 'Engineering', 'Marketing'].map(name => Department.create({name}))
     )
-    engineering.userId = lucy.id;
-    marketing.userId = lucy.id;
+    engineering.managerId = lucy.id;
+    marketing.managerId = lucy.id;
     await Promise.all([engineering.save(), marketing.save()]);
 
 }

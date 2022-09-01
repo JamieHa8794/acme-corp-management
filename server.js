@@ -15,10 +15,16 @@ app.get('/', async (req, res, next) =>{
     try{
         const [users, departments] = await Promise.all([
             User.findAll({
-                include: [Department]
+                include: [ Department ],
+                order: [
+                    ['name']
+                ]
             }),
             Department.findAll({
-                include: [User]
+                include: [{model: User , as: 'manager' }], 
+                order: [
+                    ['name']
+                ]
             })
         ])
         // res.send({
@@ -78,13 +84,13 @@ app.get('/', async (req, res, next) =>{
                                     <div class='manager'>
                                         Manager: 
                                         <form method='POST' action='/departments/${department.id}?_method=PUT'>
-                                            <select name ='userId'>
+                                            <select name ='managerId'>
                                                 <option value=''>
                                                 Not Managed
                                                 </option>
                                                 ${users.map(user =>{
                                                     return(`
-                                                    <option value='${user.id}' ${user.id == department.userId ? 'selected="selected"':''}>
+                                                    <option value='${user.id}' ${user.id == department.managerId ? 'selected="selected"':''}>
                                                         ${user.name}
                                                     </option>
                                                     `)
