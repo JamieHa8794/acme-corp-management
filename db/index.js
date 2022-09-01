@@ -20,6 +20,12 @@ const Department = conn.define('department', {
     }
 })
 
+Department.beforeSave(department =>{
+    if(department.userId===''){
+        department.userId = null;
+    }
+})
+
 Department.belongsTo(User);
 User.hasMany(Department);
 

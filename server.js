@@ -79,7 +79,7 @@ app.get('/', async (req, res, next) =>{
                                         Manager: 
                                         <form method='POST' action='/departments/${department.id}?_method=PUT'>
                                             <select name ='userId'>
-                                                <option>
+                                                <option value=''>
                                                 Not Managed
                                                 </option>
                                                 ${users.map(user =>{
